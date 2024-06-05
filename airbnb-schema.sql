@@ -1,0 +1,49 @@
+-- Airbnb database
+-- Version 1.0
+-- Date 2/26/2024
+-- Author Alex David Skiles
+-- Author Julia Scott
+
+DROP DATABASE IF EXISTS airbnb;
+CREATE DATABASE airbnb;
+USE airbnb;
+
+CREATE TABLE Location (
+	Loc_ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    Loc_Name VARCHAR(50) NOT NULL UNIQUE,
+	PRIMARY KEY (Loc_ID)
+);
+
+CREATE TABLE Host (
+	Host_ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    Host_Name VARCHAR(50) NOT NULL,
+    Loc_ID INT UNSIGNED,
+	PRIMARY KEY (Host_ID),
+    FOREIGN KEY (Loc_ID) REFERENCES Location(Loc_ID)
+);
+
+CREATE TABLE Amenity (
+    Amenity_ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	Amenity_Name VARCHAR(150) NOT NULL UNIQUE,
+	PRIMARY KEY (Amenity_ID)
+);
+
+CREATE TABLE Property (
+	Prop_ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	Prop_Name VARCHAR(150) NOT NULL,
+	Prop_Price DECIMAL(9,2) NOT NULL,
+   	Prop_Rating DECIMAL(3,2),
+	Host_ID INT UNSIGNED NOT NULL,
+   	Loc_ID INT UNSIGNED NOT NULL,
+	PRIMARY KEY (Prop_ID),
+    FOREIGN KEY (Loc_ID) REFERENCES Location (Loc_ID),
+	FOREIGN KEY (Host_ID) REFERENCES Host (Host_ID)
+);
+
+CREATE TABLE PropertyHasAmenity (
+    Prop_ID INT UNSIGNED NOT NULL,
+    Amenity_ID INT UNSIGNED NOT NULL,
+    PRIMARY KEY (Prop_ID, Amenity_ID),
+    FOREIGN KEY (Prop_ID) REFERENCES Property(Prop_ID),
+    FOREIGN KEY (Amenity_ID) REFERENCES Amenity(Amenity_ID)
+);
